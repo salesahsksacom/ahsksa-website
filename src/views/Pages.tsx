@@ -34,7 +34,7 @@ import OpenStatus from "@/components/OpenStatus";
 
 function Cta({ lang, text, label }: { lang: Lang; text?: string; label?: string }) {
   return (
-    <div className="btn-row">
+    <div className="btn-row" data-cta>
       <a className="btn btn-wa btn-lg" href={waLink(text ?? UI.waGeneral[lang])} target="_blank" rel="noopener noreferrer">
         <WhatsAppIcon size={22} />
         {label ?? UI.quote[lang]}

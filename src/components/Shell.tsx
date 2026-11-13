@@ -8,6 +8,7 @@ import { telLink, waLink } from "@/lib/links";
 import Analytics from "./Analytics";
 import Footer from "./Footer";
 import Header from "./Header";
+import MobileBar from "./MobileBar";
 import Motion from "./Motion";
 import { Ui } from "./Icon";
 
@@ -25,7 +26,7 @@ export default function Shell({ lang, children }: { lang: Lang; children: ReactN
         <Footer lang={lang} />
 
         {/* Mobile: one-tap call and WhatsApp, the two actions that matter for this business. */}
-        <div className="mobile-bar">
+        <MobileBar>
           <a href={telLink()} className="btn btn-ink" aria-label={UI.call[lang]}>
             <Ui.Phone size={20} weight="bold" aria-hidden="true" />
             {UI.call[lang]}
@@ -34,7 +35,8 @@ export default function Shell({ lang, children }: { lang: Lang; children: ReactN
             <Ui.WhatsappLogo size={20} aria-hidden="true" />
             {UI.whatsapp[lang]}
           </a>
-        </div>
+        </MobileBar>
+        <noscript><style>{".mobile-bar{transform:none!important;opacity:1!important;visibility:visible!important}"}</style></noscript>
 
         {/* Desktop: floating WhatsApp button. */}
         <a href={waLink(UI.waGeneral[lang])} target="_blank" rel="noopener noreferrer" className="fab-wa" aria-label={UI.waFloat[lang]}>
