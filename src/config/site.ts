@@ -16,7 +16,7 @@ export const SITE = {
   mapUrl: "https://maps.app.goo.gl/LQxhbwVKAAvkMPiU9",
 
   // Google Analytics 4 Measurement ID (G-XXXXXXXXXX). Empty = analytics off. Create a NEW GA4 property for this site.
-  gaId: "",
+  gaId: "G-0SJ1EL48G1",
 
   // Address as Google Maps lists it (checked Nov 13 2026): 4023 Hamad Al Tamimi, Al Sina'iyah district, Riyadh 12872.
   // The business card also prints "Al owaidha"; that sub-area name is not on the Google listing, so the site leaves it out.
@@ -60,7 +60,7 @@ export const SITE = {
 export const PLACEHOLDERS = {
   cr: SITE.cr === "0000000000",
   vat: SITE.vat === "000000000000000",
-  gaId: SITE.gaId === "",
+  gaId: (SITE.gaId as string) === "",
   since: SITE.since === null,
   geo: false,
 };
