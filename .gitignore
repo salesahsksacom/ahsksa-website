@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+next-env.d.ts
+*.tsbuildinfo
+.env*
+*.log
+.DS_Store
+Thumbs.db
+.wrangler
+
+# raw font files (the site serves the woff2 versions)
+public/fonts/*.ttf
+public/fonts/*.otf
