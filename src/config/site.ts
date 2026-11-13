@@ -15,7 +15,7 @@ export const SITE = {
   email: "sales@ahsksa.com",
   mapUrl: "https://maps.app.goo.gl/LQxhbwVKAAvkMPiU9",
 
-  // Google Analytics 4 Measurement ID (G-XXXXXXXXXX). Empty = analytics off. Create a NEW GA4 property for this site.
+  // Google Analytics 4 Measurement ID (stream https://ahsksa.com, stream ID 16335382932). Empty = analytics off.
   gaId: "G-0SJ1EL48G1",
 
   // Address as Google Maps lists it (checked Nov 13 2026): 4023 Hamad Al Tamimi, Al Sina'iyah district, Riyadh 12872.
@@ -49,8 +49,8 @@ export const SITE = {
     { ar: "حائل", en: "Hail" }, { ar: "جازان", en: "Jazan" }, { ar: "نجران", en: "Najran" },
   ],
   features: {
-    // Turn on only after the client confirms they crimp hoses to size for customers (see /products/hydraulic-hoses/).
-    hoseCrimping: false,
+    // Confirmed by the owner (Nov 13 2026): the workshop cuts and crimps hoses to size for customers.
+    hoseCrimping: true,
     // Link to the sister business (concrete pump spare parts shop). Remove if the owner prefers the two sites unlinked.
     linkProductHouse: true,
   },

@@ -10,9 +10,11 @@ import {
   slugTitle,
   type Entry,
 } from "@/content/entries";
+import { GUIDES, guideBySlug, guidePath, type Guide } from "@/content/guides";
 import { ABOUT, CONTACT, HOME, TESTING, UI } from "@/i18n/dict";
 import { abs, href, mailLink, telLink, waLink } from "@/lib/links";
 import {
+  articleJsonLd,
   breadcrumbJsonLd,
   businessJsonLd,
   collectionJsonLd,
@@ -67,6 +69,7 @@ function IndexList({ lang, items, cols = 1, offset = 0 }: { lang: Lang; items: {
   );
 }
 
+const guideRows = (lang: Lang, list: Guide[]) => list.map((g) => ({ path: guidePath(g), title: g.title[lang], text: g.card[lang] }));
 const rows = (lang: Lang, list: Entry[]) => list.map((e) => ({ path: entryPath(e), title: e.title[lang], text: e.card[lang] }));
 
 function Related({ lang, slugs }: { lang: Lang; slugs: string[] }) {
@@ -82,6 +85,23 @@ function Related({ lang, slugs }: { lang: Lang; slugs: string[] }) {
           <h2 id="rel-title" className="h1">{UI.related[lang]}</h2>
         </div>
         <IndexList lang={lang} items={items} />
+      </div>
+    </section>
+  );
+}
+
+/** Guides that mention this service or product. Renders nothing when there are none. */
+function GuideLinks({ lang, slug }: { lang: Lang; slug: string }) {
+  const list = GUIDES.filter((g) => g.related.includes(slug));
+  if (list.length === 0) return null;
+  return (
+    <section className="section" aria-labelledby="gl-title">
+      <div className="wrap split split-sticky">
+        <div className="section-head">
+          <span className="eyebrow">{UI.nav.guides[lang]}</span>
+          <h2 id="gl-title" className="h1">{UI.guidesRelated[lang]}</h2>
+        </div>
+        <IndexList lang={lang} items={guideRows(lang, list)} />
       </div>
     </section>
   );
@@ -269,6 +289,17 @@ export function HomeView({ lang }: { lang: Lang }) {
         </div>
       </section>
 
+      <section className="section" aria-labelledby="guides-title">
+        <div className="wrap split split-sticky">
+          <div className="section-head">
+            <span className="eyebrow">{UI.nav.guides[lang]}</span>
+            <h2 id="guides-title" className="h1">{UI.guidesTitle[lang]}</h2>
+            <p className="muted">{UI.guidesLead[lang]}</p>
+          </div>
+          <IndexList lang={lang} items={guideRows(lang, GUIDES)} />
+        </div>
+      </section>
+
       <ServiceArea lang={lang} />
       <FaqList lang={lang} faq={faq} title={HOME.faqTitle[lang]} tone="paper" />
       <ContactBand lang={lang} />
@@ -439,6 +470,7 @@ export function EntryView({ lang, slug }: { lang: Lang; slug: string }) {
         </div>
       </section>
 
+      <GuideLinks lang={lang} slug={slug} />
       <FaqList lang={lang} faq={e.faq} tone="paper" />
       <Related lang={lang} slugs={e.related} />
       <section className="section">
@@ -500,6 +532,7 @@ export function TestingView({ lang }: { lang: Lang }) {
           </ul>
         </div>
       </section>
+      <GuideLinks lang={lang} slug="pump-testing" />
       <FaqList lang={lang} faq={TESTING.faq} tone="paper" />
       <Related lang={lang} slugs={["hydraulic-pump", "gear-pump", "power-pack"]} />
       <section className="section">
@@ -603,6 +636,107 @@ export function ContactView({ lang }: { lang: Lang }) {
             </li>
           </ul>
           <QuoteForm lang={lang} />
+        </div>
+      </section>
+    </>
+  );
+}
+
+/* ---------- guides ---------- */
+
+export const guidesParams = () => GUIDES.map((g) => ({ slug: g.slug }));
+
+export const guidesMeta = (lang: Lang): Metadata =>
+  pageMeta({
+    lang,
+    path: "/guides/",
+    title: titled(lang, lang === "ar" ? "أدلة هيدروليك: أعطال السلندرات والمضخات" : "Hydraulic Guides: Cylinder & Pump Faults"),
+    description:
+      lang === "ar"
+        ? "أدلة عملية عن تسريب السلندرات وضعف ضغط المضخات وصوتها وحرارة الزيت، وكيف تطلب عرض سعر صيانة من ورشتنا في الرياض."
+        : "Practical guides on cylinder leaks, low pump pressure, pump noise and oil heat, and how to request a repair quote from our Riyadh workshop.",
+  });
+
+export function GuidesIndex({ lang }: { lang: Lang }) {
+  const name = UI.nav.guides[lang];
+  const title = lang === "ar" ? "أدلة هيدروليك: أعطال السلندرات والمضخات وطريقة الفحص" : "Hydraulic guides: cylinder and pump faults and how to check them";
+  const desc = UI.guidesLead[lang];
+  const crumbs = [{ name: UI.breadcrumbHome[lang], path: "/" }, { name }];
+  return (
+    <>
+      <JsonLd
+        data={graph(
+          businessJsonLd(lang),
+          websiteJsonLd(lang),
+          webPageJsonLd(lang, { path: "/guides/", name: title, description: desc, type: "CollectionPage" }),
+          breadcrumbJsonLd(lang, crumbs, "/guides/"),
+          collectionJsonLd(lang, { name, description: desc, path: "/guides/", items: GUIDES.map((g) => ({ name: g.title[lang], path: guidePath(g) })) }),
+        )}
+      />
+      <PageHead lang={lang} crumbs={[{ name }]} title={title} lead={desc} />
+      <section className="section">
+        <div className="wrap">
+          <IndexList lang={lang} items={guideRows(lang, GUIDES)} />
+        </div>
+      </section>
+      <ContactBand lang={lang} />
+    </>
+  );
+}
+
+export function guideMeta(lang: Lang, slug: string): Metadata {
+  const g = guideBySlug(slug)!;
+  return pageMeta({ lang, path: guidePath(g), title: titled(lang, g.metaTitle[lang]), description: g.desc[lang] });
+}
+
+export function GuideView({ lang, slug }: { lang: Lang; slug: string }) {
+  const g = guideBySlug(slug)!;
+  const path = guidePath(g);
+  const parent = { name: UI.nav.guides[lang], path: "/guides/" };
+  const crumbs = [{ name: UI.breadcrumbHome[lang], path: "/" }, parent, { name: g.title[lang], path }];
+  return (
+    <>
+      <JsonLd
+        data={graph(
+          businessJsonLd(lang),
+          websiteJsonLd(lang),
+          webPageJsonLd(lang, { path, name: titled(lang, g.metaTitle[lang]), description: g.desc[lang], mainId: `${abs(lang, path)}#main` }),
+          breadcrumbJsonLd(lang, crumbs, path),
+          articleJsonLd(lang, g),
+          faqJsonLd(lang, g.faq),
+        )}
+      />
+      <PageHead lang={lang} crumbs={[parent, { name: g.title[lang] }]} title={g.h1[lang]} lead={g.answer[lang]}>
+        <Cta lang={lang} text={g.ask[lang]} />
+        <p className="small muted">{UI.pickup[lang]}. {UI.quoteNote[lang]}</p>
+      </PageHead>
+
+      <article className="section">
+        <div className="wrap" style={{ display: "grid", gap: 40 }}>
+          {g.note && <p className="note">{g.note[lang]}</p>}
+          <div className="rows">
+            {g.sections.map((s, i) => (
+              <div key={i}>
+                <h2 className="h2">{s.h[lang]}</h2>
+                <div style={{ display: "grid", gap: 16 }}>
+                  {s.p && <p>{s.p[lang]}</p>}
+                  {s.list && (
+                    <ul className="signs">
+                      {s.list.map((li, j) => <li key={j}>{li[lang]}</li>)}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <FaqList lang={lang} faq={g.faq} tone="paper" />
+      <Related lang={lang} slugs={g.related} />
+      <section className="section">
+        <div className="wrap-narrow">
+          <QuoteForm lang={lang} preset={g.related[0]} />
         </div>
       </section>
     </>

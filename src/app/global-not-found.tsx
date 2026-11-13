@@ -2,8 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { SITE } from "@/config/site";
 import { telLink } from "@/lib/links";
+import { ICONS } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "الصفحة غير موجودة | Page not found", robots: { index: false, follow: true } };
+export const metadata: Metadata = { ...ICONS, title: "الصفحة غير موجودة | Page not found", robots: { index: false, follow: true } };
 
 /** Shown by Cloudflare for any address that does not exist. Both languages. */
 export default function GlobalNotFound() {

@@ -9,6 +9,7 @@ export const UI = {
     services: t("الخدمات", "Services"),
     products: t("المنتجات", "Products"),
     testing: t("فحص المضخات", "Pump testing"),
+    guides: t("الأدلة", "Guides"),
     about: t("من نحن", "About"),
     contact: t("اتصل بنا", "Contact"),
     menu: t("القائمة", "Menu"),
@@ -38,6 +39,12 @@ export const UI = {
   waFloat: t("تواصل عبر واتساب", "Chat on WhatsApp"),
   more: t("التفاصيل", "Details"),
   related: t("خدمات ومنتجات ذات صلة", "Related services and products"),
+  guidesRelated: t("أدلة ذات صلة", "Related guides"),
+  guidesTitle: t("أدلة عملية قبل الصيانة", "Practical guides before you repair"),
+  guidesLead: t(
+    "أدلة عن تسريب السلندرات وضعف ضغط المضخات وصوتها وحرارة الزيت، وكيف تجهّز صور القطعة وتفاصيلها لتحصل على عرض سعر أسرع.",
+    "Guides on cylinder leaks, low pump pressure, pump noise and oil heat, and how to prepare photos and details of the part for a faster quote.",
+  ),
   signs: t("متى تحتاج إلى صيانة؟", "Signs it needs attention"),
   scope: t("ما نقدمه", "What we do"),
   scopeProduct: t("ما نوفّره", "What we supply"),
@@ -106,8 +113,8 @@ export const HOME = {
   eyebrow: t("ورشة هيدروليك في الرياض", "Hydraulic workshop in Riyadh"),
   whatTitle: t("ما هو مركز النظام المتطور للهيدروليك؟", "What is Advanced Hydraulics?"),
   what: t(
-    "مركز النظام المتطور للهيدروليك ورشة هيدروليك في الصناعية القديمة بالرياض. نصلح ونصنّع السلندرات الهيدروليكية والمضخات والصمامات ووحدات القدرة، ونصلح الرافعات والشاحنات المزوّدة برافعة، ونفحص المضخات ونصدر تقرير الفحص. نستلم القطعة أو نحضر إلى المعدة في جميع مدن المملكة، والأسعار تُعطى عند الطلب.",
-    "Advanced Hydraulics is a hydraulic workshop in the Old Industrial Area of Riyadh. We repair and manufacture hydraulic cylinders, pumps, valves and power packs, repair cranes and boom trucks, and test pumps with a written report. We collect parts or visit the machine in all Saudi cities, and prices are given on request.",
+    "مركز النظام المتطور للهيدروليك ورشة هيدروليك في الصناعية القديمة بالرياض. نصلح ونصنّع السلندرات الهيدروليكية والمضخات والصمامات ووحدات القدرة، ونصلح هيدروليك المعدات الثقيلة كالرافعات والشاحنات المزوّدة برافعة، ونفحص المضخات ونصدر تقرير الفحص. نستلم القطعة أو نحضر إلى المعدة في جميع مدن المملكة، والأسعار تُعطى عند الطلب.",
+    "Advanced Hydraulics is a hydraulic workshop in the Old Industrial Area of Riyadh. We repair and manufacture hydraulic cylinders, pumps, valves and power packs, repair heavy-equipment hydraulics such as cranes and boom trucks, and test pumps with a written report. We collect parts or visit the machine in all Saudi cities, and prices are given on request.",
   ),
   areaTitle: t("نخدم جميع مدن المملكة", "We serve every city in the Kingdom"),
   areaText: t(

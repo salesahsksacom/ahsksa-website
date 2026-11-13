@@ -1,6 +1,8 @@
 import type { Viewport } from "next";
+import { ICONS } from "@/lib/seo";
 import Shell from "@/components/Shell";
 
+export const metadata = ICONS;
 export const viewport: Viewport = { viewportFit: "cover", themeColor: "#0A1B33" };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

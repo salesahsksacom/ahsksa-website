@@ -88,7 +88,7 @@ for (const [k, v] of descs) if (v.length > 1) err(v.join(", "), `duplicate descr
 for (const [k, v] of h1s) if (v.length > 1) warn(v.join(", "), `duplicate h1: ${k}`);
 
 // sitemap, robots, llms, headers, og image, icons
-const need = ["/sitemap.xml", "/robots.txt", "/llms.txt", "/llms-full.txt", "/_headers", "/img/og.jpg", "/logo/icon.png", "/favicon.ico", "/404.html", "/manifest.webmanifest"];
+const need = ["/sitemap.xml", "/robots.txt", "/llms.txt", "/llms-full.txt", "/_headers", "/img/og.jpg", "/logo/icon.png", "/favicon.ico", "/favicon.svg", "/favicon-96x96.png", "/apple-touch-icon.png", "/web-app-manifest-192x192.png", "/web-app-manifest-512x512.png", "/site.webmanifest", "/404.html"];
 for (const n of need) if (!fileSet.has(n)) err("export", `missing ${n}`);
 if (fileSet.has("/sitemap.xml")) {
   const sm = readFileSync(join(OUT, "sitemap.xml"), "utf8");
@@ -112,7 +112,7 @@ if (/gaId: ""/.test(cfg)) todo.push("GA4 Measurement ID is empty: analytics is o
 if (/since: null/.test(cfg)) todo.push("Founding year not set: the 'since' line is hidden");
 if (/hoseCrimping: false/.test(cfg)) todo.push("Hose crimping not confirmed: hose page makes no crimping claim");
 if (/linkProductHouse: true/.test(cfg)) todo.push("Product House cross-link is ON: needs the owner's OK");
-todo.push("Google Business Profile: claim it, fix the name spelling (النضام -> النظام) and the category (now Auto repair shop)");
+todo.push("Google Business Profile: claim it, fix the name spelling (النضام -> النظام) and the category (now Auto repair shop; use خدمة إصلاح المعدات الهيدروليكية / Hydraulic repair service)");
 
 console.log(`\ncheck-site: ${pageCount} pages checked`);
 if (warns.length) { console.log(`\nWarnings (${warns.length})`); warns.forEach((w) => console.log("  - " + w)); }

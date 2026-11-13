@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { ENTRIES, entryPath } from "@/content/entries";
+import { GUIDES, guidePath } from "@/content/guides";
 import { abs } from "@/lib/links";
 
 export const dynamic = "force-static";
@@ -9,8 +10,8 @@ export const dynamic = "force-static";
 const MODIFIED = "2026-11-13";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const top = ["/", "/services/", "/products/", "/pump-testing/", "/about/", "/contact/"];
-  const paths = [...top, ...ENTRIES.map(entryPath)];
+  const top = ["/", "/services/", "/products/", "/pump-testing/", "/guides/", "/about/", "/contact/"];
+  const paths = [...top, ...ENTRIES.map(entryPath), ...GUIDES.map(guidePath)];
   const rank = (p: string) => (p === "/" ? 1 : top.includes(p) ? 0.8 : 0.7);
   // One entry per language version, each listing both versions (Google's hreflang-in-sitemap format).
   return paths.flatMap((p) =>

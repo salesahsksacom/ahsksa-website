@@ -58,6 +58,7 @@ export default function Footer({ lang }: { lang: Lang }) {
           </ul>
           <h2 className="footer-h footer-sub">{n.about[lang]}</h2>
           <ul className="footer-links">
+            <li><a href={href(lang, "/guides/")}>{n.guides[lang]}</a></li>
             <li><a href={href(lang, "/about/")}>{n.about[lang]}</a></li>
             <li><a href={href(lang, "/contact/")}>{n.contact[lang]}</a></li>
             {SITE.features.linkProductHouse && (

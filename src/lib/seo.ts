@@ -2,8 +2,22 @@ import type { Metadata } from "next";
 import { PLACEHOLDERS, SITE, type Lang, type T } from "@/config/site";
 import { abs, href } from "@/lib/links";
 import { PRODUCT_LIST, SERVICE_LIST, entryPath, type Entry, type Faq } from "@/content/entries";
+import { guidePath, type Guide } from "@/content/guides";
 
 export const BRAND = { ar: "النظام المتطور للهيدروليك", en: "Advanced Hydraulics" } as const;
+/** Browser, home-screen and search-result icons. Files live in /public; the manifest is /site.webmanifest. */
+export const ICONS: Metadata = {
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+};
 export const titled = (lang: Lang, page: string) => `${page} | ${BRAND[lang]}`;
 
 const ID = { business: `${SITE.url}/#business`, site: `${SITE.url}/#website` };
@@ -36,8 +50,8 @@ export function pageMeta(o: { lang: Lang; path: string; title: string; descripti
 }
 
 const KNOWS = {
-  ar: ["صيانة السلندرات الهيدروليكية", "صيانة المضخات الهيدروليكية", "صمامات التحكم", "وحدات القدرة الهيدروليكية", "السلندرات الهوائية", "صيانة الرافعات", "فحص المضخات"],
-  en: ["Hydraulic cylinder repair", "Hydraulic pump repair", "Control valves", "Hydraulic power packs", "Pneumatic cylinders", "Crane repair", "Pump testing"],
+  ar: ["صيانة السلندرات الهيدروليكية", "صيانة المضخات الهيدروليكية", "صمامات التحكم", "وحدات القدرة الهيدروليكية", "السلندرات الهوائية", "صيانة الرافعات", "هيدروليك المعدات الثقيلة", "كبس الليات الهيدروليكية", "فحص المضخات"],
+  en: ["Hydraulic cylinder repair", "Hydraulic pump repair", "Control valves", "Hydraulic power packs", "Pneumatic cylinders", "Crane repair", "Heavy equipment hydraulics", "Hydraulic hose crimping", "Pump testing"],
 } as const;
 
 export function businessJsonLd(lang: Lang) {
@@ -65,6 +79,8 @@ export function businessJsonLd(lang: Lang) {
     address: { "@type": "PostalAddress", streetAddress: `${SITE.street}, Al Sina'iyah`, addressLocality: "Riyadh", addressRegion: "Riyadh", postalCode: SITE.postalCode, addressCountry: "SA" },
     geo: { "@type": "GeoCoordinates", latitude: SITE.geo.lat, longitude: SITE.geo.lng },
     hasMap: SITE.mapUrl,
+    // Add the Google Business Profile link, Facebook, Instagram and LinkedIn pages here once they exist and are owned by the business.
+    sameAs: [SITE.mapUrl],
     openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: SITE.open.days, opens: SITE.open.opens, closes: SITE.open.closes }],
     areaServed: [{ "@type": "Country", name: "Saudi Arabia" }, ...SITE.cities.map((c) => ({ "@type": "City", name: c[lang] }))],
     knowsAbout: KNOWS[lang],
@@ -73,7 +89,7 @@ export function businessJsonLd(lang: Lang) {
       name: lang === "ar" ? "الخدمات والمنتجات" : "Services and products",
       itemListElement: [
         { "@type": "OfferCatalog", name: lang === "ar" ? "خدمات الصيانة والتصنيع" : "Repair and manufacturing services", itemListElement: SERVICE_LIST.map((e) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: e.title[lang], url: abs(lang, entryPath(e)) } })) },
-        { "@type": "OfferCatalog", name: lang === "ar" ? "المنتجات" : "Products", itemListElement: PRODUCT_LIST.map((e) => ({ "@type": "Offer", itemOffered: { "@type": "Product", name: e.title[lang], url: abs(lang, entryPath(e)) } })) },
+        { "@type": "OfferCatalog", name: lang === "ar" ? "المنتجات" : "Products", itemListElement: PRODUCT_LIST.map((e) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: e.title[lang], url: abs(lang, entryPath(e)) } })) },
       ],
     },
     slogan: lang === "ar" ? "صيانة وتصنيع هيدروليك في الرياض" : "Hydraulic repair and manufacturing in Riyadh",
@@ -91,17 +107,44 @@ export function websiteJsonLd(lang: Lang) {
   };
 }
 
+/**
+ * Products are sold by quote, so there is no price or review to publish. Google's Product rich results need an
+ * offer with a price, a review or a rating; without one the item is reported as an error in Search Console.
+ * Both kinds of page are therefore marked as a Service (supply, repair or manufacture on request).
+ */
 export function serviceJsonLd(lang: Lang, e: Entry) {
   return {
-    "@type": e.kind === "service" ? "Service" : "Product",
+    "@type": "Service",
     "@id": `${abs(lang, entryPath(e))}#main`,
     name: e.h1[lang],
     description: e.desc[lang],
     url: abs(lang, entryPath(e)),
     inLanguage: lang,
-    ...(e.kind === "service"
-      ? { serviceType: e.title.en, provider: { "@id": ID.business }, areaServed: { "@type": "Country", name: "Saudi Arabia" }, availableChannel: { "@type": "ServiceChannel", serviceUrl: `https://wa.me/${SITE.whatsapp}`, servicePhone: { "@type": "ContactPoint", telephone: `+${SITE.whatsapp}` } } }
-      : { brand: { "@type": "Brand", name: SITE.nameEn }, category: e.title.en }),
+    serviceType: e.kind === "service" ? e.title.en : `Supply of ${e.title.en}`,
+    category: e.title.en,
+    provider: { "@id": ID.business },
+    areaServed: { "@type": "Country", name: "Saudi Arabia" },
+    availableChannel: { "@type": "ServiceChannel", serviceUrl: `https://wa.me/${SITE.whatsapp}`, servicePhone: { "@type": "ContactPoint", telephone: `+${SITE.whatsapp}` } },
+  };
+}
+
+/** A guide is an Article published by the business itself: no named author, so the business is author and publisher. */
+export function articleJsonLd(lang: Lang, g: Guide) {
+  const url = abs(lang, guidePath(g));
+  return {
+    "@type": "Article",
+    "@id": `${url}#main`,
+    headline: g.h1[lang],
+    description: g.desc[lang],
+    url,
+    inLanguage: lang,
+    datePublished: g.published,
+    dateModified: SITE.updated,
+    image: `${SITE.url}/img/og.jpg`,
+    author: { "@id": ID.business },
+    publisher: { "@id": ID.business },
+    isPartOf: { "@id": ID.site },
+    mainEntityOfPage: { "@id": `${url}#webpage` },
   };
 }
 

@@ -48,7 +48,7 @@ const SERVICES: Entry[] = [
       t("خدوش أو انحناء أو تآكل في العمود المطلي بالكروم", "Scoring, bending or wear on the chrome-plated rod"),
     ],
     scope: [
-      t("فك السلندر وفحص الماسورة والعمود والمكبس", "Stripping the cylinder and inspecting tube, rod and piston"),
+      t("فك السلندر وفحص الماسورة والعمود والمكبس (توضيب كامل عند الحاجة)", "Stripping the cylinder and inspecting tube, rod and piston (a full overhaul when needed)"),
       t("تغيير الأختام: جاهزة أو مصنّعة حسب المقاس", "Seal replacement, with ready-made seals or seals made to size"),
       t("توريد أعمدة مطلية بالكروم الصلب وماسورة مصقولة (Honed tube) عند الحاجة", "Supply of hard-chrome rods and honed tube when needed"),
       t("تصنيع السلندرات الهيدروليكية القياسية بجميع أنواعها", "Manufacturing of all standard types of hydraulic cylinders"),
@@ -92,8 +92,8 @@ const SERVICES: Entry[] = [
     ),
     h1: t("صيانة المضخات الهيدروليكية (الطرمبات) وفحصها في الرياض", "Hydraulic pump repair and testing in Riyadh"),
     lead: t(
-      "نصلح جميع أنواع المضخات الهيدروليكية للمعدات الصناعية والمتنقلة. ولدينا تجهيزات لفحص جميع أنواع المضخات الهيدروليكية وإصدار تقرير الفحص، حتى تعرف حالة المضخة بدل التخمين.",
-      "We repair all types of hydraulic pumps for industrial and mobile equipment. We also have facilities to test all types of hydraulic pumps and issue a test report, so you know the pump's condition instead of guessing.",
+      "نصلح جميع أنواع المضخات الهيدروليكية للمعدات الصناعية والمعدات الثقيلة والمتنقلة. ولدينا تجهيزات لفحص جميع أنواع المضخات الهيدروليكية وإصدار تقرير الفحص، حتى تعرف حالة المضخة بدل التخمين.",
+      "We repair all types of hydraulic pumps for industrial, heavy and mobile equipment. We also have facilities to test all types of hydraulic pumps and issue a test report, so you know the pump's condition instead of guessing.",
     ),
     signs: [
       t("ضعف الضغط أو بطء حركة المعدة", "Low pressure or slow movement of the machine"),
@@ -497,10 +497,20 @@ if (SITE.features.hoseCrimping) {
   );
   hoses.h1 = t("كبس ليات هيدروليك وبيعها في الرياض", "Hydraulic hose crimping and supply in Riyadh");
   hoses.lead = t(
-    "نكبس الليات الهيدروليكية بالمقاس الذي تحتاجه ونوفّر الليات للمعدات. أرسل مواصفات اللي أو صورة اللي القديم ونعطيك السعر.",
-    "We crimp hydraulic hoses to the size you need and supply hoses for equipment. Send the hose specification or a photo of the old one and we will quote.",
+    "نقصّ ونكبس الليات الهيدروليكية بالمقاس الذي تحتاجه، ونوفّر الليات للمعدات الصناعية والمعدات الثقيلة والزراعية. أحضر اللي القديم إلى الورشة، أو أرسل مواصفاته أو صورته على واتساب ونعطيك السعر.",
+    "We cut and crimp hydraulic hoses to the size you need, and supply hoses for industrial, heavy and agricultural equipment. Bring the old hose to the workshop, or send its specification or photo on WhatsApp, and we will quote.",
   );
-  hoses.scope.unshift(t("كبس الليات الهيدروليكية بالطول والوصلات المطلوبة", "Crimping hydraulic hoses to the length and fittings you need"));
+  hoses.scope.unshift(
+    t("قصّ وكبس الليات الهيدروليكية بالطول والوصلات المطلوبة", "Cutting and crimping hydraulic hoses to the length and fittings you need"),
+    t("كبس لي بديل على نفس مقاس اللي القديم", "Crimping a replacement hose to the same size as the old one"),
+  );
+  hoses.faq.unshift({
+    q: t("هل تكبسون لي هيدروليك أحضره معي؟", "Can you crimp a hydraulic hose I bring in?"),
+    a: t(
+      "نعم، أحضر اللي القديم إلى الورشة ونكبس لك بديلًا على نفس المقاس والوصلات. وإن لم تستطع الحضور فأرسل صورته ومواصفاته على واتساب.",
+      "Yes. Bring the old hose to the workshop and we crimp a replacement to the same size and fittings. If you cannot come, send its photo and specification on WhatsApp.",
+    ),
+  });
 }
 
 const PRODUCTS: Entry[] = [

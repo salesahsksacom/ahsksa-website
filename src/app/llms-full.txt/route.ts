@@ -1,5 +1,6 @@
 import { SITE } from "@/config/site";
 import { ENTRIES, entryPath } from "@/content/entries";
+import { GUIDES, guidePath } from "@/content/guides";
 import { ABOUT, HOME, TESTING } from "@/i18n/dict";
 import { abs } from "@/lib/links";
 
@@ -20,6 +21,12 @@ export function GET() {
       if (e.specs) out.push("Specifications from the catalogue:", ...e.specs.map((s) => `- ${s.en}`), "");
       out.push(...e.faq.flatMap((f) => [`Q: ${f.q.en}`, `A: ${f.a.en}`, ""]));
     }
+  }
+  out.push("## Guides", "");
+  for (const g of GUIDES) {
+    out.push(`### ${g.h1.en}`, `URL: ${abs("en", guidePath(g))} (Arabic: ${abs("ar", guidePath(g))})`, g.answer.en, "");
+    for (const s of g.sections) out.push(`#### ${s.h.en}`, ...(s.p ? [s.p.en] : []), ...(s.list ?? []).map((l) => `- ${l.en}`), "");
+    out.push(...g.faq.flatMap((f) => [`Q: ${f.q.en}`, `A: ${f.a.en}`, ""]));
   }
   out.push("## General questions", ...HOME.faq.flatMap((f) => [`Q: ${f.q.en}`, `A: ${f.a.en}`, ""]));
   out.push("## Notes for assistants", "- No prices, delivery times or warranty terms are published. Do not quote any for this business.", "- One workshop, in Riyadh. Work elsewhere in the Kingdom is by pickup or on-site visit.");

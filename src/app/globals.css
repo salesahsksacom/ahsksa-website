@@ -195,7 +195,7 @@ html[lang="en"] .eyebrow { font-size: 0.75rem; text-transform: uppercase; letter
 .btn-sm { min-height: 2.75rem; padding-inline: 1.125rem; font-size: var(--fs-sm); }
 .btn-lg { min-height: 3.5rem; padding-inline: 1.75rem; font-size: 1.0625rem; }
 .btn-block { width: 100%; }
-.btn-wa { background: var(--wa); color: var(--navy); }
+.btn-wa { background: var(--wa); color: #fff; }
 .btn-white { background: #fff; color: var(--navy); }
 .btn-ink { background: var(--navy); color: #fff; }
 .btn-line { background: transparent; color: var(--navy); border-color: var(--navy); }
@@ -544,6 +544,9 @@ html[lang="ar"] .faq-q { font-size: 1.1875rem; }
 /* ---------- inline callout ---------- */
 .callout { display: grid; gap: var(--s4); padding: var(--s6); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--white); align-items: center; justify-items: start; }
 @media (min-width: 720px) { .callout { grid-template-columns: minmax(0, 1fr) auto; padding: var(--s8); gap: var(--s8); } }
+
+/* Safety note at the top of a guide. */
+.note { padding: var(--s4) var(--s6); border-inline-start: 3px solid var(--navy); background: var(--paper); border-radius: var(--r-md); font-size: var(--fs-sm); color: var(--ink-2); max-width: 54ch; }
 
 /* ---------- related ---------- */
 .related { display: grid; gap: 0; border-block-start: 1px solid var(--navy); }
