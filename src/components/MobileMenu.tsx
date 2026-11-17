@@ -125,7 +125,7 @@ export default function MobileMenu({ rtl, links, menuLabel, closeLabel, callLabe
               const target = x.h.replace(/^\/en(?=\/)/, "");
               const on = here === target || here.startsWith(target);
               return (
-                <li key={x.h} style={{ ["--i" as string]: i }}>
+                <li key={x.h}>
                   <a href={x.h} aria-current={on ? "page" : undefined} onClick={() => setOpen(false)}>
                     <span>{x.l}</span>
                     <Arrow size={18} weight="bold" aria-hidden="true" />
@@ -137,17 +137,17 @@ export default function MobileMenu({ rtl, links, menuLabel, closeLabel, callLabe
         </nav>
 
         <div className="drawer-actions">
-          <a href={tel} className="btn btn-ink btn-lg btn-block" aria-label={`${callLabel}: ${phone}`} style={{ ["--i" as string]: links.length }}>
+          <a href={tel} className="btn btn-ink btn-lg btn-block" aria-label={`${callLabel}: ${phone}`}>
             <Ui.Phone size={20} weight="bold" aria-hidden="true" />
             <span dir="ltr" className="num">{phone}</span>
           </a>
-          <a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-wa btn-lg btn-block" style={{ ["--i" as string]: links.length + 1 }}>
+          <a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-wa btn-lg btn-block">
             <WhatsAppIcon size={22} />
             <span>{waLabel}</span>
           </a>
         </div>
 
-        <div className="drawer-meta" style={{ ["--i" as string]: links.length + 2 }}>
+        <div className="drawer-meta">
           <OpenStatus lang={lang} />
           {meta.map((m) => <span key={m}>{m}</span>)}
           <a href={SITE.mapUrl} target="_blank" rel="noopener noreferrer" className="drawer-dir" onClick={() => setOpen(false)}>

@@ -40,6 +40,7 @@ export const UI = {
   more: t("التفاصيل", "Details"),
   related: t("خدمات ومنتجات ذات صلة", "Related services and products"),
   guidesRelated: t("أدلة ذات صلة", "Related guides"),
+  guidesCta: t("كل الأدلة", "All guides"),
   guidesTitle: t("أدلة عملية قبل الصيانة", "Practical guides before you repair"),
   guidesLead: t(
     "أدلة عن تسريب السلندرات وضعف ضغط المضخات وصوتها وحرارة الزيت، وكيف تجهّز صور القطعة وتفاصيلها لتحصل على عرض سعر أسرع.",
@@ -136,6 +137,18 @@ export const HOME = {
   servicesLead: t("اختر المعدة أو القطعة لترى ما نقدمه لها.", "Pick the equipment or part to see what we do for it."),
   productsTitle: t("منتجات نوفّرها لعملاء الورشة والمحال", "Products we supply"),
   productsLead: t("نبيع للزبائن الذين يزورون الورشة أو يطلبون عبر الهاتف وواتساب.", "We sell to walk-in customers and to those who order by phone and WhatsApp."),
+  galleryEyebrow: t("من أعمالنا", "Our work"),
+  galleryTitle: t("معدات وقطع نعمل عليها", "Equipment and parts we work on"),
+  galleryLead: t("صور لأنواع المعدات والقطع الهيدروليكية والهوائية التي نصلحها ونصنّعها ونفحصها.", "Photos of the kinds of hydraulic and pneumatic equipment and parts we repair, manufacture and test."),
+  gallery: [
+    { img: "/img/gallery-power-unit.webp", cap: t("وحدة طاقة هيدروليكية (موتور ومضخة وخزان)", "Hydraulic power unit (motor, pump and tank)") },
+    { img: "/img/gallery-wetkit-truck.webp", cap: t("طقم هيدروليكي (Wet Kit) مركّب على شاحنة قلاب", "Hydraulic wet kit installed on a tipper truck") },
+    { img: "/img/gallery-crane-truck.webp", cap: t("رافعة مركّبة على شاحنة", "Truck-mounted crane") },
+    { img: "/img/gallery-power-station.webp", cap: t("وحدة طاقة هيدروليكية موفّرة للطاقة", "Energy-efficient hydraulic power unit") },
+    { img: "/img/gallery-precision-tube.webp", cap: t("ماسورة مصقولة (Honed Tube) عالية الدقة", "Precision honed steel tube") },
+    { img: "/img/gallery-test-rig.webp", cap: t("فحص الضغط على لوحة اختبار مضخات", "Pressure testing on a pump test rig") },
+    { img: "/img/about-hero-crane.webp", cap: t("رافعة هيدروليكية على شاحنة أثناء رفع حمولة", "Truck-mounted hydraulic crane lifting a load") },
+  ],
   testTitle: t("فحص المضخات الهيدروليكية مع تقرير الفحص", "Hydraulic pump testing with a test report"),
   testText: t(
     "لدينا تجهيزات لفحص جميع أنواع المضخات الهيدروليكية وإصدار تقرير الفحص، فتعرف حالة المضخة قبل أن تقرر الإصلاح أو الاستبدال.",

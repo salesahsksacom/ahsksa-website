@@ -13,6 +13,7 @@ export default function Header({ lang }: { lang: Lang }) {
     { h: href(lang, "/services/"), l: n.services[lang] },
     { h: href(lang, "/products/"), l: n.products[lang] },
     { h: href(lang, "/pump-testing/"), l: n.testing[lang] },
+    { h: href(lang, "/guides/"), l: n.guides[lang] },
     { h: href(lang, "/about/"), l: n.about[lang] },
     { h: href(lang, "/contact/"), l: n.contact[lang] },
   ];

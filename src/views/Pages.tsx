@@ -6,6 +6,8 @@ import {
   SERVICE_LIST,
   entryBySlug,
   entryPath,
+  slugImage,
+  slugImageAlt,
   slugPath,
   slugTitle,
   type Entry,
@@ -50,12 +52,14 @@ function Cta({ lang, text, label }: { lang: Lang; text?: string; label?: string 
 }
 
 /** A numbered, ruled list. Replaces the card grid: easier to scan, and every row is one big tap target. */
-function IndexList({ lang, items, cols = 1, offset = 0 }: { lang: Lang; items: { path: string; title: string; text: string }[]; cols?: 1 | 2; offset?: number }) {
+function IndexList({ lang, items, cols = 1, offset = 0 }: { lang: Lang; items: { path: string; title: string; text: string; img?: string; imgAlt?: string }[]; cols?: 1 | 2; offset?: number }) {
+  const hasImg = items.some((it) => it.img);
   return (
-    <ul className={`index ${cols === 2 ? "index-2" : ""}`}>
+    <ul className={`index ${cols === 2 ? "index-2" : ""} ${hasImg ? "index-img" : ""}`}>
       {items.map((it, i) => (
         <li key={it.path}>
           <a href={href(lang, it.path)}>
+            {hasImg && (it.img ? <img className="index-img-thumb" src={it.img} alt={it.imgAlt ?? ""} loading="lazy" width={56} height={56} /> : <span className="index-img-thumb" aria-hidden="true" />)}
             <span className="n num">{String(i + 1 + offset).padStart(2, "0")}</span>
             <span className="t">
               <strong>{it.title}</strong>
@@ -69,13 +73,42 @@ function IndexList({ lang, items, cols = 1, offset = 0 }: { lang: Lang; items: {
   );
 }
 
+/** Large cover-photo card grid. Replaces IndexList where real photography should carry the row. */
+function CoverGrid({ lang, items, cols = 3 }: { lang: Lang; items: { path: string; title: string; text: string; img?: string; imgAlt?: string }[]; cols?: 2 | 3 }) {
+  return (
+    <ul className={`cover-grid ${cols === 3 ? "cover-grid-3" : ""}`}>
+      {items.map((it, i) => (
+        <li key={it.path}>
+          <a className="cover-card" href={href(lang, it.path)}>
+            <span className="cover-img-wrap">
+              {it.img ? <img src={it.img} alt={it.imgAlt ?? ""} loading="lazy" width={600} height={450} /> : <span className="cover-ph" aria-hidden="true" />}
+            </span>
+            <span className="cover-body">
+              <span className="n num">{String(i + 1).padStart(2, "0")}</span>
+              <strong>{it.title}</strong>
+              <span>{it.text}</span>
+              <span className="go"><Arrow lang={lang} /></span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 const guideRows = (lang: Lang, list: Guide[]) => list.map((g) => ({ path: guidePath(g), title: g.title[lang], text: g.card[lang] }));
-const rows = (lang: Lang, list: Entry[]) => list.map((e) => ({ path: entryPath(e), title: e.title[lang], text: e.card[lang] }));
+
+/** Homepage teaser: 4 guides picked for measured search demand (cylinder leak, pump pressure, hose
+    failure) plus one high-authority/E-E-A-T safety topic (fluid injection) that AI answer engines
+    favour for citation-worthiness. Full 26-guide list lives at /guides/, linked via the CTA below. */
+const HOME_GUIDE_SLUGS = ["hydraulic-cylinder-leaking", "hydraulic-pump-no-pressure", "hydraulic-hose-failure-causes", "hydraulic-fluid-injection-injury-safety"];
+const homeGuides = () => HOME_GUIDE_SLUGS.map((s) => GUIDES.find((g) => g.slug === s)!).filter(Boolean);
+const rows = (lang: Lang, list: Entry[]) => list.map((e) => ({ path: entryPath(e), title: e.title[lang], text: e.card[lang], img: e.image, imgAlt: e.imageAlt?.[lang] }));
 
 function Related({ lang, slugs }: { lang: Lang; slugs: string[] }) {
   const items = slugs.map((s) => {
     const e = entryBySlug(s);
-    return { path: slugPath(s), title: slugTitle(s)[lang], text: e ? e.card[lang] : TESTING.desc[lang] };
+    return { path: slugPath(s), title: slugTitle(s)[lang], text: e ? e.card[lang] : TESTING.desc[lang], img: slugImage(s), imgAlt: slugImageAlt(s, lang) };
   });
   return (
     <section className="section section-paper" aria-labelledby="rel-title">
@@ -84,7 +117,10 @@ function Related({ lang, slugs }: { lang: Lang; slugs: string[] }) {
           <span className="eyebrow">{UI.more[lang]}</span>
           <h2 id="rel-title" className="h1">{UI.related[lang]}</h2>
         </div>
-        <IndexList lang={lang} items={items} />
+        {/* cols=2, not 3: this grid lives in the narrow 7fr column of a .split layout, so 3-across
+            squeezes each card to roughly half the width it gets in a full-width grid (Products, /services/)
+            and makes it look tall/vertical instead of matching those cards' proportions. */}
+        <CoverGrid lang={lang} items={items} cols={2} />
       </div>
     </section>
   );
@@ -121,6 +157,30 @@ function ServiceArea({ lang }: { lang: Lang }) {
             {SITE.cities.map((c) => <li key={c.en}>{c[lang]}</li>)}
           </ul>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Gallery({ lang }: { lang: Lang }) {
+  return (
+    <section className="section" aria-labelledby="gallery-title">
+      <div className="wrap">
+        <div className="section-head">
+          <span className="eyebrow">{HOME.galleryEyebrow[lang]}</span>
+          <h2 id="gallery-title" className="h1">{HOME.galleryTitle[lang]}</h2>
+          <p className="muted">{HOME.galleryLead[lang]}</p>
+        </div>
+        <ul className="gallery">
+          {HOME.gallery.map((g, i) => (
+            <li key={i}>
+              <figure>
+                <img src={g.img} alt={g.cap[lang]} loading="lazy" width={600} height={450} />
+                <figcaption>{g.cap[lang]}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -192,11 +252,18 @@ export function HomeView({ lang }: { lang: Lang }) {
               <span className="eyebrow">{HOME.eyebrow[lang]}</span>
               <h1 className="display">{HOME.h1[lang]}</h1>
               <p className="lead">{HOME.lead[lang]}</p>
+              <OpenStatus lang={lang} />
               <Cta lang={lang} />
               {SITE.since && <p className="small" style={{ color: "var(--on-navy-2)" }}>{UI.since(SITE.since)[lang]}</p>}
             </div>
             <div className="hero-art">
-              <CylinderDiagram lang={lang} />
+              <img
+                src="/img/home-hero-workshop.webp"
+                alt={lang === "ar" ? "ورشة تصليح سلندرات هيدروليكية مع لوحة فحص ومعدات" : "Hydraulic cylinder repair workshop with test stand and tooling"}
+                loading="eager"
+                width={1400}
+                height={788}
+              />
             </div>
           </div>
           <ul className="facts">
@@ -221,13 +288,15 @@ export function HomeView({ lang }: { lang: Lang }) {
       </section>
 
       <section className="section section-paper" aria-labelledby="svc-title">
-        <div className="wrap split split-sticky">
+        <div className="wrap">
           <div className="section-head">
             <span className="eyebrow">{UI.nav.services[lang]}</span>
             <h2 id="svc-title" className="h1">{HOME.servicesTitle[lang]}</h2>
             <p className="muted">{HOME.servicesLead[lang]}</p>
           </div>
-          <IndexList lang={lang} items={rows(lang, SERVICE_LIST)} />
+          {/* Same structure as the Products section below: plain full-width .wrap, section-head
+              stacked above a full-width cols=3 grid — not the narrow .split column this used before. */}
+          <CoverGrid lang={lang} items={rows(lang, SERVICE_LIST)} cols={3} />
         </div>
       </section>
 
@@ -265,9 +334,11 @@ export function HomeView({ lang }: { lang: Lang }) {
             <h2 id="prod-title" className="h1">{HOME.productsTitle[lang]}</h2>
             <p className="muted">{HOME.productsLead[lang]}</p>
           </div>
-          <IndexList lang={lang} items={rows(lang, PRODUCT_LIST)} cols={2} />
+          <CoverGrid lang={lang} items={rows(lang, PRODUCT_LIST)} cols={3} />
         </div>
       </section>
+
+      <Gallery lang={lang} />
 
       <section className="section section-paper" aria-labelledby="steps-title">
         <div className="wrap">
@@ -296,7 +367,12 @@ export function HomeView({ lang }: { lang: Lang }) {
             <h2 id="guides-title" className="h1">{UI.guidesTitle[lang]}</h2>
             <p className="muted">{UI.guidesLead[lang]}</p>
           </div>
-          <IndexList lang={lang} items={guideRows(lang, GUIDES)} />
+          <div style={{ display: "grid", gap: 24 }}>
+            <IndexList lang={lang} items={guideRows(lang, homeGuides())} />
+            <a className="btn btn-line" href={href(lang, "/guides/")} style={{ justifySelf: "start" }}>
+              {UI.guidesCta[lang]} <Arrow lang={lang} />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -325,7 +401,7 @@ export function ServicesIndex({ lang }: { lang: Lang }) {
   const desc = lang === "ar" ? "خدمات الصيانة والتصنيع الهيدروليكي" : "Hydraulic repair and manufacturing services";
   const title = lang === "ar" ? "خدمات الصيانة والتصنيع الهيدروليكي في الرياض" : "Hydraulic repair and manufacturing services in Riyadh";
   const crumbs = [{ name: UI.breadcrumbHome[lang], path: "/" }, { name }];
-  const items = [...rows(lang, SERVICE_LIST), { path: "/pump-testing/", title: UI.nav.testing[lang], text: TESTING.desc[lang] }];
+  const items = [...rows(lang, SERVICE_LIST), { path: "/pump-testing/", title: UI.nav.testing[lang], text: TESTING.desc[lang], img: slugImage("pump-testing"), imgAlt: slugImageAlt("pump-testing", lang) }];
   return (
     <>
       <JsonLd
@@ -337,11 +413,17 @@ export function ServicesIndex({ lang }: { lang: Lang }) {
           collectionJsonLd(lang, { name, description: desc, path: "/services/", items: items.map((it) => ({ name: it.title, path: it.path })) }),
         )}
       />
-      <PageHead lang={lang} crumbs={[{ name }]} title={title} lead={`${HOME.servicesLead[lang]} ${UI.pickup[lang]}.`}>
+      <PageHead
+        lang={lang}
+        crumbs={[{ name }]}
+        title={title}
+        lead={`${HOME.servicesLead[lang]} ${UI.pickup[lang]}.`}
+        art={<div className="head-art"><img src="/img/services-hero-boom.webp" alt={lang === "ar" ? "صيانة سلندر هيدروليكي لمعدات ثقيلة" : "Hydraulic cylinder repair on heavy equipment"} loading="eager" /></div>}
+      >
       </PageHead>
       <section className="section">
         <div className="wrap">
-          <IndexList lang={lang} items={items} />
+          <CoverGrid lang={lang} items={items} cols={3} />
         </div>
       </section>
       <ContactBand lang={lang} />
@@ -376,11 +458,17 @@ export function ProductsIndex({ lang }: { lang: Lang }) {
           collectionJsonLd(lang, { name, description: desc, path: "/products/", items: PRODUCT_LIST.map((e) => ({ name: e.title[lang], path: entryPath(e) })) }),
         )}
       />
-      <PageHead lang={lang} crumbs={[{ name }]} title={title} lead={HOME.productsLead[lang]}>
+      <PageHead
+        lang={lang}
+        crumbs={[{ name }]}
+        title={title}
+        lead={HOME.productsLead[lang]}
+        art={<div className="head-art"><img src="/img/products-hero-seals.webp" alt={lang === "ar" ? "تشكيلة من أختام السلندرات الهيدروليكية والهوائية" : "Assortment of hydraulic and pneumatic cylinder seals"} loading="eager" /></div>}
+      >
       </PageHead>
       <section className="section">
         <div className="wrap">
-          <IndexList lang={lang} items={rows(lang, PRODUCT_LIST)} cols={2} />
+          <CoverGrid lang={lang} items={rows(lang, PRODUCT_LIST)} cols={3} />
         </div>
       </section>
       <ContactBand lang={lang} />
@@ -429,7 +517,13 @@ export function EntryView({ lang, slug }: { lang: Lang; slug: string }) {
         crumbs={[parent, { name: e.title[lang] }]}
         title={e.h1[lang]}
         lead={e.lead[lang]}
-        art={slug === "hydraulic-cylinder" ? <div className="head-art"><CylinderDiagram lang={lang} tone="light" /></div> : undefined}
+        art={
+          slug === "hydraulic-cylinder" ? (
+            <div className="head-art"><CylinderDiagram lang={lang} tone="light" /></div>
+          ) : e.image ? (
+            <div className="head-art"><img src={e.image} alt={e.imageAlt?.[lang] ?? ""} loading="eager" /></div>
+          ) : undefined
+        }
       >
         <Cta lang={lang} text={msg} />
         <p className="small muted">{UI.pickup[lang]}. {UI.quoteNote[lang]}</p>
@@ -518,6 +612,7 @@ export function TestingView({ lang }: { lang: Lang }) {
         crumbs={[{ name }]}
         title={TESTING.h1[lang]}
         lead={TESTING.lead[lang]}
+        art={<div className="head-art"><img src="/img/testing-hero-rig.webp" alt={lang === "ar" ? "لوحة فحص وتشغيل مضخات هيدروليكية" : "Hydraulic pump test rig and control panel"} loading="eager" /></div>}
       >
         <Cta lang={lang} text={`${UI.waGeneral[lang]} ${name}`} />
       </PageHead>
@@ -562,7 +657,13 @@ export function AboutView({ lang }: { lang: Lang }) {
           breadcrumbJsonLd(lang, crumbs, "/about/"),
         )}
       />
-      <PageHead lang={lang} crumbs={[{ name }]} title={ABOUT.h1[lang]} lead={ABOUT.lead[lang]}>
+      <PageHead
+        lang={lang}
+        crumbs={[{ name }]}
+        title={ABOUT.h1[lang]}
+        lead={ABOUT.lead[lang]}
+        art={<div className="head-art"><img src="/img/about-hero-crane.webp" alt={lang === "ar" ? "رافعة أثناء رفع حمولة ثقيلة في موقع عمل" : "Crane lifting a heavy load on a job site"} loading="eager" /></div>}
+      >
         {SITE.since && <p className="small muted">{UI.since(SITE.since)[lang]}</p>}
       </PageHead>
       <section className="section">

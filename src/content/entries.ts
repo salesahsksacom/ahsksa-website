@@ -9,6 +9,8 @@ export type Entry = {
   slug: string;
   kind: "service" | "product";
   icon: string;
+  image?: string; // /img/<slug>.webp, optional product/service photo
+  imageAlt?: T;
   title: T; // short name, used in cards, nav and breadcrumbs
   card: T; // one line under the title in cards
   metaTitle: T; // before " | brand"
@@ -29,6 +31,8 @@ const SERVICES: Entry[] = [
     slug: "hydraulic-cylinder",
     kind: "service",
     icon: "cylinder",
+    image: "/img/hydraulic-cylinder.webp",
+    imageAlt: t("سلندرات هيدروليكية مصنّعة", "Manufactured hydraulic cylinders"),
     title: t("السلندرات الهيدروليكية", "Hydraulic cylinders"),
     card: t("صيانة وتصنيع السلندرات الهيدروليكية القياسية", "Repair and manufacturing of standard hydraulic cylinders"),
     metaTitle: t("صيانة سلندر هيدروليك في الرياض", "Hydraulic Cylinder Repair, Riyadh"),
@@ -83,6 +87,8 @@ const SERVICES: Entry[] = [
     slug: "hydraulic-pump",
     kind: "service",
     icon: "pump",
+    image: "/img/hydraulic-pump.webp",
+    imageAlt: t("مضخة هيدروليكية مكبسية", "Hydraulic piston pump"),
     title: t("المضخات الهيدروليكية", "Hydraulic pumps"),
     card: t("صيانة جميع أنواع المضخات (الطرمبات) مع تقرير الفحص", "Repair of all pump types, with a test report"),
     metaTitle: t("صيانة مضخة هيدروليك (طرمبة) في الرياض", "Hydraulic Pump Repair & Testing, Riyadh"),
@@ -136,6 +142,8 @@ const SERVICES: Entry[] = [
     slug: "control-valve",
     kind: "service",
     icon: "valve",
+    image: "/img/control-valve.webp",
+    imageAlt: t("صمام تحكم اتجاه كهربائي هيدروليكي", "Hydraulic solenoid directional control valve"),
     title: t("صمامات التحكم والموزعات", "Control valves and distributors"),
     card: t("صيانة صمامات التحكم والموزعات الهيدروليكية", "Repair of hydraulic control valves and distributors"),
     metaTitle: t("صيانة صمامات التحكم الهيدروليكية", "Hydraulic Control Valve Repair, Riyadh"),
@@ -189,6 +197,8 @@ const SERVICES: Entry[] = [
     slug: "power-pack",
     kind: "service",
     icon: "powerpack",
+    image: "/img/power-pack.webp",
+    imageAlt: t("وحدة باور باك هيدروليكية", "Hydraulic power pack unit"),
     title: t("وحدات القدرة الهيدروليكية", "Hydraulic power packs"),
     card: t("تصنيع وصيانة وحدات القدرة (باور باك) للتطبيقات الخاصة", "Manufacturing and repair of power packs for special applications"),
     metaTitle: t("تصنيع وصيانة باور باك هيدروليك", "Hydraulic Power Pack Manufacturing, Riyadh"),
@@ -242,6 +252,8 @@ const SERVICES: Entry[] = [
     slug: "pneumatic-cylinder",
     kind: "service",
     icon: "pneumatic",
+    image: "/img/pneumatic-cylinder.webp",
+    imageAlt: t("سلندر هوائي", "Pneumatic cylinder"),
     title: t("السلندرات الهوائية", "Pneumatic cylinders"),
     card: t("صيانة وتصنيع السلندرات الهوائية (نيوماتيك)", "Repair and manufacturing of pneumatic cylinders"),
     metaTitle: t("صيانة وتصنيع سلندر هوائي في الرياض", "Pneumatic Cylinder Repair, Riyadh"),
@@ -293,6 +305,8 @@ const SERVICES: Entry[] = [
     slug: "gear-pump",
     kind: "service",
     icon: "gear",
+    image: "/img/gear-pump.webp",
+    imageAlt: t("مضخة هيدروليكية تروس", "Hydraulic gear pump"),
     title: t("مضخات التروس (الجير)", "Gear pumps"),
     card: t("تصنيع وتوريد مضخات التروس الهيدروليكية", "Manufacturing and supply of hydraulic gear pumps"),
     metaTitle: t("تصنيع مضخات تروس (جير) هيدروليك", "Hydraulic Gear Pump Manufacturing, Riyadh"),
@@ -339,6 +353,8 @@ const SERVICES: Entry[] = [
     slug: "boom-truck",
     kind: "service",
     icon: "boomtruck",
+    image: "/img/boom-truck.webp",
+    imageAlt: t("شاحنة رافعة بذراع هيدروليكي", "Truck-mounted boom crane"),
     title: t("الشاحنات المزوّدة برافعة", "Boom trucks"),
     card: t("صيانة هيدروليك الشاحنات المزوّدة برافعة (ونش / بوم ترك)", "Hydraulic repair for boom trucks (truck-mounted cranes)"),
     metaTitle: t("صيانة هيدروليك شاحنة ونش (بوم ترك)", "Boom Truck Hydraulic Repair, Riyadh"),
@@ -392,6 +408,8 @@ const SERVICES: Entry[] = [
     slug: "crane",
     kind: "service",
     icon: "crane",
+    image: "/img/crane.webp",
+    imageAlt: t("رافعة هيدروليكية في موقع عمل", "Hydraulic crane on a worksite"),
     title: t("الرافعات (الكرينات)", "Cranes"),
     card: t("صيانة الرافعات الهيدروليكية، ومنها رافعات أطلس", "Hydraulic crane repair, including Atlas cranes"),
     metaTitle: t("صيانة كرين هيدروليك وكرين أطلس", "Hydraulic Crane & Atlas Crane Repair, Riyadh"),
@@ -446,6 +464,8 @@ const hoses: Entry = {
   slug: "hydraulic-hoses",
   kind: "product",
   icon: "hose",
+  image: "/img/hydraulic-hoses.webp",
+  imageAlt: t("خراطيم هيدروليكية بوصلات مكبوسة", "Hydraulic hoses with crimped fittings"),
   title: t("الليات الهيدروليكية", "Hydraulic hoses"),
   card: t("ليات (خراطيم) هيدروليكية للمعدات", "Hydraulic hoses for equipment"),
   metaTitle: t("ليات هيدروليك في الرياض", "Hydraulic Hoses in Riyadh"),
@@ -519,6 +539,8 @@ const PRODUCTS: Entry[] = [
     slug: "hydraulic-seals",
     kind: "product",
     icon: "seal",
+    image: "/img/hydraulic-seals.webp",
+    imageAlt: t("مجموعة أختام هيدروليكية", "Assorted hydraulic seals"),
     title: t("الأختام الهيدروليكية (السيلات)", "Hydraulic seals"),
     card: t("أختام جاهزة ومصنّعة حسب الطلب للهيدروليك والنيوماتيك", "Ready-made and made-to-order seals for hydraulic and pneumatic use"),
     metaTitle: t("أختام (سيلات) هيدروليك في الرياض", "Hydraulic Seals & Seal Manufacturing, Riyadh"),
@@ -566,6 +588,8 @@ const PRODUCTS: Entry[] = [
     slug: "honed-tubes-chrome-rods",
     kind: "product",
     icon: "rod",
+    image: "/img/honed-tubes-chrome-rods.webp",
+    imageAlt: t("ماسورة مصقولة وعمود مطلي بالكروم", "Honed tube and chrome-plated rod"),
     title: t("الماسورة المصقولة وأعمدة الكروم", "Honed tubes and chrome rods"),
     card: t("ماسورة مصقولة من 30 إلى 230 مم وأعمدة كروم من 24 إلى 140 مم", "Honed tube 30–230 mm and chrome rods 24–140 mm"),
     metaTitle: t("ماسورة مصقولة وأعمدة كروم صلب", "Honed Tubes & Hard Chrome Rods, Riyadh"),
@@ -617,6 +641,8 @@ const PRODUCTS: Entry[] = [
     slug: "tipping-systems",
     kind: "product",
     icon: "tipper",
+    image: "/img/tipping-systems.webp",
+    imageAlt: t("طقم قلاب هيدروليكي مركّب على شاحنة", "Hydraulic wet-kit tipping system on a truck"),
     title: t("أنظمة القلاب", "Tipping systems"),
     card: t("أنظمة قلاب كاملة (Wet kit) مع السلندر", "Complete tipping systems (wet kit) with cylinder"),
     metaTitle: t("أنظمة قلاب هيدروليك (ويت كيت)", "Hydraulic Tipping Systems (Wet Kit), Riyadh"),
@@ -663,6 +689,8 @@ const PRODUCTS: Entry[] = [
     slug: "pto",
     kind: "product",
     icon: "pto",
+    image: "/img/pto.webp",
+    imageAlt: t("وحدة نقل حركة PTO", "PTO power take-off unit"),
     title: t("وحدات نقل الحركة (PTO)", "Power take-off (PTO)"),
     card: t("جميع أنواع PTO للتطبيقات الهيدروليكية", "All types of PTO for hydraulic applications"),
     metaTitle: t("وحدات PTO للتطبيقات الهيدروليكية", "PTO Units for Hydraulic Systems, Riyadh"),
@@ -708,6 +736,8 @@ const PRODUCTS: Entry[] = [
     slug: "pressure-gauges",
     kind: "product",
     icon: "gauge",
+    image: "/img/pressure-gauges.webp",
+    imageAlt: t("مقياس ضغط هيدروليكي", "Hydraulic pressure gauge"),
     title: t("مقاييس الضغط", "Pressure gauges"),
     card: t("مقاييس ضغط للأنظمة الهيدروليكية والهوائية", "Pressure gauges for hydraulic and pneumatic systems"),
     metaTitle: t("مقاييس ضغط للهيدروليك والنيوماتيك", "Pressure Gauges for Hydraulic Systems, Riyadh"),
@@ -753,6 +783,8 @@ const PRODUCTS: Entry[] = [
     slug: "pneumatic-products",
     kind: "product",
     icon: "frl",
+    image: "/img/pneumatic-products.webp",
+    imageAlt: t("وحدة تجهيز هواء FRL (فلتر ومنظّم وموزّع زيت)", "FRL air-preparation unit (filter, regulator, lubricator)"),
     title: t("المنتجات الهوائية (نيوماتيك)", "Pneumatic products"),
     card: t("وحدات FRL وسلندرات هوائية وجميع الملحقات", "FRL units, pneumatic cylinders and all accessories"),
     metaTitle: t("منتجات نيوماتيك وFRL في الرياض", "Pneumatic Products & FRL Units, Riyadh"),
@@ -807,3 +839,11 @@ export const slugPath = (slug: string) => {
   return e ? entryPath(e) : slug === "pump-testing" ? "/pump-testing/" : "/";
 };
 export const slugTitle = (slug: string): T => entryBySlug(slug)?.title ?? (slug === "pump-testing" ? t("فحص المضخات", "Pump testing") : t("", ""));
+
+// pump-testing isn't a catalogue Entry, but it appears in mixed lists
+// (ServicesIndex, Related) alongside real entries, so it needs its own image.
+export const slugImage = (slug: string): string | undefined =>
+  entryBySlug(slug)?.image ?? (slug === "pump-testing" ? "/img/pump-testing.webp" : undefined);
+export const slugImageAlt = (slug: string, lang: "ar" | "en"): string | undefined =>
+  entryBySlug(slug)?.imageAlt?.[lang] ??
+  (slug === "pump-testing" ? (lang === "ar" ? "فني يفحص مضخة على طاولة اختبار" : "Technician checking a pump on a test rig") : undefined);

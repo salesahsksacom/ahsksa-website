@@ -6,6 +6,7 @@ import { useEffect } from "react";
 const REVEAL = [
   ".section-head", ".answer", ".kv", ".rows > div", ".index li", ".steps li", ".ticks > li", ".signs",
   ".callout", ".report", ".faq", ".chips", ".quote-form", ".contact-list li", ".band-grid > *", ".facts li",
+  ".cover-grid li", ".gallery li",
 ].join(",");
 
 /**
