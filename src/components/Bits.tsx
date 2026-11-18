@@ -60,13 +60,14 @@ export function KeyFacts({ items }: { items: { k: string; v: ReactNode }[] }) {
   );
 }
 
-export function FaqList({ lang, faq, title, tone }: { lang: Lang; faq: FaqT[]; title?: string; tone?: "paper" }) {
+export function FaqList({ lang, faq, title, tone, cta }: { lang: Lang; faq: FaqT[]; title?: string; tone?: "paper"; cta?: ReactNode }) {
   return (
     <section className={`section ${tone === "paper" ? "section-paper" : ""}`} aria-labelledby="faq-title">
       <div className="wrap split split-sticky">
         <div className="section-head">
           <span className="eyebrow">{UI.faq[lang]}</span>
           <h2 id="faq-title" className="h1">{title ?? UI.faq[lang]}</h2>
+          {cta}
         </div>
         <Faq items={faq.map((f) => ({ q: f.q[lang], a: f.a[lang] }))} />
       </div>

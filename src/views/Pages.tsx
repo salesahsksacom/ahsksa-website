@@ -13,6 +13,7 @@ import {
   type Entry,
 } from "@/content/entries";
 import { GUIDES, guideBySlug, guidePath, type Guide } from "@/content/guides";
+import { FAQS, FAQ_CATEGORIES } from "@/content/faq";
 import { ABOUT, CONTACT, HOME, TESTING, UI } from "@/i18n/dict";
 import { abs, href, mailLink, telLink, waLink } from "@/lib/links";
 import {
@@ -103,6 +104,11 @@ const guideRows = (lang: Lang, list: Guide[]) => list.map((g) => ({ path: guideP
     favour for citation-worthiness. Full 26-guide list lives at /guides/, linked via the CTA below. */
 const HOME_GUIDE_SLUGS = ["hydraulic-cylinder-leaking", "hydraulic-pump-no-pressure", "hydraulic-hose-failure-causes", "hydraulic-fluid-injection-injury-safety"];
 const homeGuides = () => HOME_GUIDE_SLUGS.map((s) => GUIDES.find((g) => g.slug === s)!).filter(Boolean);
+
+/** Homepage teaser: the 4 highest-intent questions (price, service area, pump testing, repair scope).
+    Full 43-entry FAQ lives at /faq/, linked via the CTA below. */
+const HOME_FAQ_IDS = ["how-to-get-a-price", "work-outside-riyadh", "do-you-test-pumps", "what-equipment-you-repair"];
+const homeFaqs = () => HOME_FAQ_IDS.map((id) => FAQS.find((f) => f.id === id)!).filter(Boolean);
 const rows = (lang: Lang, list: Entry[]) => list.map((e) => ({ path: entryPath(e), title: e.title[lang], text: e.card[lang], img: e.image, imgAlt: e.imageAlt?.[lang] }));
 
 function Related({ lang, slugs }: { lang: Lang; slugs: string[] }) {
@@ -233,7 +239,7 @@ export const homeMeta = (lang: Lang): Metadata =>
   pageMeta({ lang, path: "/", title: titled(lang, HOME.metaTitle[lang]), description: HOME.desc[lang] });
 
 export function HomeView({ lang }: { lang: Lang }) {
-  const faq = HOME.faq;
+  const faq = homeFaqs();
   return (
     <>
       <JsonLd
@@ -377,7 +383,17 @@ export function HomeView({ lang }: { lang: Lang }) {
       </section>
 
       <ServiceArea lang={lang} />
-      <FaqList lang={lang} faq={faq} title={HOME.faqTitle[lang]} tone="paper" />
+      <FaqList
+        lang={lang}
+        faq={faq}
+        title={HOME.faqTitle[lang]}
+        tone="paper"
+        cta={
+          <a className="btn btn-line" href={href(lang, "/faq/")} style={{ justifySelf: "start" }}>
+            {UI.faqCta[lang]} <Arrow lang={lang} />
+          </a>
+        }
+      />
       <ContactBand lang={lang} />
     </>
   );
@@ -840,6 +856,46 @@ export function GuideView({ lang, slug }: { lang: Lang; slug: string }) {
           <QuoteForm lang={lang} preset={g.related[0]} />
         </div>
       </section>
+    </>
+  );
+}
+
+/* ---------- faq ---------- */
+
+export const faqPageMeta = (lang: Lang): Metadata =>
+  pageMeta({
+    lang,
+    path: "/faq/",
+    title: titled(lang, lang === "ar" ? "الأسئلة الشائعة عن صيانة وتصنيع الهيدروليك" : "Hydraulic Repair & Manufacturing FAQ"),
+    description:
+      lang === "ar"
+        ? "أكثر من 50 سؤالًا وجوابًا عن الأسعار والمضخات والسلندرات والأختام والخراطيم والزيت ووحدات القدرة والرافعات والتصنيع، لورشتنا في الرياض."
+        : "Over 50 questions and answers on pricing, pumps, cylinders, seals, hoses, oil, power packs, cranes and manufacturing, for our Riyadh workshop.",
+  });
+
+export function FaqPageIndex({ lang }: { lang: Lang }) {
+  const name = UI.nav.faq[lang];
+  const title = UI.faqPageTitle[lang];
+  const desc = UI.faqPageLead[lang];
+  const crumbs = [{ name: UI.breadcrumbHome[lang], path: "/" }, { name }];
+  return (
+    <>
+      <JsonLd
+        data={graph(
+          businessJsonLd(lang),
+          websiteJsonLd(lang),
+          webPageJsonLd(lang, { path: "/faq/", name: title, description: desc, type: "FAQPage" }),
+          breadcrumbJsonLd(lang, crumbs, "/faq/"),
+          faqJsonLd(lang, FAQS),
+        )}
+      />
+      <PageHead lang={lang} crumbs={[{ name }]} title={title} lead={desc} />
+      {FAQ_CATEGORIES.map((cat, i) => {
+        const items = FAQS.filter((f) => f.category === cat.id);
+        if (!items.length) return null;
+        return <FaqList key={cat.id} lang={lang} faq={items} title={cat.label[lang]} tone={i % 2 === 0 ? "paper" : undefined} />;
+      })}
+      <ContactBand lang={lang} />
     </>
   );
 }

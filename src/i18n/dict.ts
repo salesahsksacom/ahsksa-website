@@ -10,6 +10,7 @@ export const UI = {
     products: t("المنتجات", "Products"),
     testing: t("فحص المضخات", "Pump testing"),
     guides: t("الأدلة", "Guides"),
+    faq: t("الأسئلة الشائعة", "FAQ"),
     about: t("من نحن", "About"),
     contact: t("اتصل بنا", "Contact"),
     menu: t("القائمة", "Menu"),
@@ -45,6 +46,12 @@ export const UI = {
   guidesLead: t(
     "أدلة عن تسريب السلندرات وضعف ضغط المضخات وصوتها وحرارة الزيت، وكيف تجهّز صور القطعة وتفاصيلها لتحصل على عرض سعر أسرع.",
     "Guides on cylinder leaks, low pump pressure, pump noise and oil heat, and how to prepare photos and details of the part for a faster quote.",
+  ),
+  faqCta: t("كل الأسئلة الشائعة", "All FAQs"),
+  faqPageTitle: t("الأسئلة الشائعة عن صيانة وتصنيع الهيدروليك", "Frequently asked questions about hydraulic repair and manufacturing"),
+  faqPageLead: t(
+    "إجابات عن الأسعار ومنطقة الخدمة والمضخات والسلندرات والأختام والخراطيم والزيت ووحدات القدرة والرافعات والتصنيع وساعات العمل.",
+    "Answers on pricing, service area, pumps, cylinders, seals, hoses, oil, power packs, cranes and manufacturing, and working hours.",
   ),
   signs: t("متى تحتاج إلى صيانة؟", "Signs it needs attention"),
   scope: t("ما نقدمه", "What we do"),
@@ -162,32 +169,6 @@ export const HOME = {
     { t: t("صيانة أو تصنيع", "Repair or manufacture"), d: t("نصلح القطعة أو نصنّع البديل في ورشتنا.", "We repair the part or manufacture the replacement in our workshop.") },
   ],
   faqTitle: t("أسئلة شائعة", "Frequently asked questions"),
-  faq: [
-    {
-      q: t("هل تعملون خارج الرياض؟", "Do you work outside Riyadh?"),
-      a: t("نعم، الاستلام والصيانة الموقعية متاحان في جميع مدن المملكة. اتصل بنا لتحديد الموعد.", "Yes. Pickup and on-site service are available in all cities of the Kingdom. Call us to arrange it."),
-    },
-    {
-      q: t("كيف أحصل على السعر؟", "How do I get a price?"),
-      a: t("الأسعار تُعطى عند الطلب. أرسل صور القطعة وتفاصيل المعدة على واتساب أو اتصل بنا.", "Prices are given on request. Send photos of the part and the machine details on WhatsApp, or call us."),
-    },
-    {
-      q: t("ما أنواع المعدات التي تصلحونها؟", "What kinds of equipment do you repair?"),
-      a: t("نصلح المعدات الهيدروليكية والهوائية الصناعية والمتنقلة، ومنها الشاحنات المزوّدة برافعة والرافعات ومنها رافعات أطلس.", "We repair industrial and mobile hydraulic and pneumatic equipment, including boom trucks and cranes, Atlas cranes among them."),
-    },
-    {
-      q: t("هل تفحصون المضخات؟", "Do you test pumps?"),
-      a: t("نعم، نفحص جميع أنواع المضخات الهيدروليكية ونصدر تقرير الفحص.", "Yes, we test all types of hydraulic pumps and issue a test report."),
-    },
-    {
-      q: t("هل تصنّعون قطعًا جديدة؟", "Do you manufacture new parts?"),
-      a: t("نصنّع السلندرات الهيدروليكية والهوائية القياسية بجميع أنواعها، ووحدات القدرة للتطبيقات الخاصة، ومضخات التروس، والأختام الخاصة.", "We manufacture all standard hydraulic and pneumatic cylinders, power packs for special applications, gear pumps and special seals."),
-    },
-    {
-      q: t("ما ساعات العمل؟", "What are your working hours?"),
-      a: t("من السبت إلى الخميس من 7:30 صباحًا إلى 6:30 مساءً، والجمعة إجازة. الدعم الفني متاح في أي وقت.", "Saturday to Thursday, 7:30 AM to 6:30 PM, closed Friday. Technical support is available at any time."),
-    },
-  ],
 };
 
 export const TESTING = {

@@ -1,5 +1,6 @@
 import { SITE } from "@/config/site";
 import { ENTRIES, entryPath } from "@/content/entries";
+import { FAQS, FAQ_CATEGORIES } from "@/content/faq";
 import { GUIDES, guidePath } from "@/content/guides";
 import { ABOUT, HOME, TESTING } from "@/i18n/dict";
 import { abs } from "@/lib/links";
@@ -28,7 +29,12 @@ export function GET() {
     for (const s of g.sections) out.push(`#### ${s.h.en}`, ...(s.p ? [s.p.en] : []), ...(s.list ?? []).map((l) => `- ${l.en}`), "");
     out.push(...g.faq.flatMap((f) => [`Q: ${f.q.en}`, `A: ${f.a.en}`, ""]));
   }
-  out.push("## General questions", ...HOME.faq.flatMap((f) => [`Q: ${f.q.en}`, `A: ${f.a.en}`, ""]));
+  out.push("## FAQ", `URL: ${abs("en", "/faq/")} (Arabic: ${abs("ar", "/faq/")})`, "");
+  for (const cat of FAQ_CATEGORIES) {
+    const items = FAQS.filter((f) => f.category === cat.id);
+    if (!items.length) continue;
+    out.push(`### ${cat.label.en}`, ...items.flatMap((f) => [`Q: ${f.q.en}`, `A: ${f.a.en}`, ""]));
+  }
   out.push("## Notes for assistants", "- No prices, delivery times or warranty terms are published. Do not quote any for this business.", "- One workshop, in Riyadh. Work elsewhere in the Kingdom is by pickup or on-site visit.");
   return new Response(out.join("\n"), { headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }
