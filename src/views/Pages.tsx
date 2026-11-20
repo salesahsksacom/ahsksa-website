@@ -238,6 +238,18 @@ const factsOf = (lang: Lang) => [
 export const homeMeta = (lang: Lang): Metadata =>
   pageMeta({ lang, path: "/", title: titled(lang, HOME.metaTitle[lang]), description: HOME.desc[lang] });
 
+const HERO_SLIDE_SECONDS = 6;
+const HOME_HERO: { src: string; mobile?: string }[] = [
+  // home-hero-workshop.webp dropped entirely (desktop and mobile) per owner's call.
+  { src: "/img/home-hero-pump-bench.webp", mobile: "/img/home-hero-pump-bench916.webp" },
+  { src: "/img/home-hero-hose-station.webp", mobile: "/img/home-hero-hose-station916.webp" },
+  { src: "/img/home-hero-valve-powerpack.webp", mobile: "/img/home-hero-valve-powerpack916.webp" },
+  // home-hero-crane-bay.webp / home-hero-crane-bay916.webp left out: the generated sign reads
+  // "النظام التطور" (typo — missing م, should be "المتطور") on the desktop crop, and the
+  // Arabic text is cropped out of frame on the 9:16 version so the typo can't even be checked
+  // there. Add both back together once the sign is regenerated correctly or made illegible.
+];
+
 export function HomeView({ lang }: { lang: Lang }) {
   const faq = homeFaqs();
   return (
@@ -252,6 +264,20 @@ export function HomeView({ lang }: { lang: Lang }) {
       />
 
       <section className="hero on-dark">
+        <div className="hero-bg" aria-hidden="true">
+          {HOME_HERO.map((slide, i) => (
+            <picture key={slide.src}>
+              {slide.mobile && <source media="(max-width: 719.98px)" srcSet={slide.mobile} />}
+              <img
+                src={slide.src}
+                alt=""
+                loading={i === 0 ? "eager" : "lazy"}
+                style={{ animationDelay: `${i * HERO_SLIDE_SECONDS}s`, animationDuration: `${HOME_HERO.length * HERO_SLIDE_SECONDS}s` }}
+              />
+            </picture>
+          ))}
+        </div>
+        <div className="hero-scrim" aria-hidden="true" />
         <div className="wrap hero-inner">
           <div className="hero-main">
             <div className="hero-copy">
@@ -261,15 +287,6 @@ export function HomeView({ lang }: { lang: Lang }) {
               <OpenStatus lang={lang} />
               <Cta lang={lang} />
               {SITE.since && <p className="small" style={{ color: "var(--on-navy-2)" }}>{UI.since(SITE.since)[lang]}</p>}
-            </div>
-            <div className="hero-art">
-              <img
-                src="/img/home-hero-workshop.webp"
-                alt={lang === "ar" ? "ورشة تصليح سلندرات هيدروليكية مع لوحة فحص ومعدات" : "Hydraulic cylinder repair workshop with test stand and tooling"}
-                loading="eager"
-                width={1400}
-                height={788}
-              />
             </div>
           </div>
           <ul className="facts">
